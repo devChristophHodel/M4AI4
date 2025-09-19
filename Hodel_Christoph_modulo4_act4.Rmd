@@ -1,0 +1,140 @@
+
+---
+title:    "Ejercicio práctico Clustering"
+license:  by-nc-sa
+urlcolor: blue
+output:
+  word_document:  default
+  html_document: 
+    theme:        cosmo 
+    highlight:    tango 
+    toc:          true
+    toc_float:    true
+    code_folding: show
+  epuRate::epurate:
+    toc:             TRUE
+    number_sections: FALSE
+    code_folding:    "show"
+  pdf_document:   default
+---
+
+<style>
+body {
+text-align: justify}
+</style>
+
+# 1. Planteamiento del problema
+
+En este ejercicio te pediré que imagines que estás trabajando como científico de de datos en una empresa de vinos blancos portugueses, la cuál dispone de un amplio catálogo de vinos.
+
+Para este ejercicio nos enfocaremos en un set de datos que representa la calidad de distintos tipos de vino blanco. Dicha calidad comprende valores entre 3 y 9.
+
+A tal efecto, disponemos de 11 variables explicativas. Encontrarás más información del dataset en el fichero 4.3_AD_ejercicio_diccionario.names
+
+Para este ejercicio, nos interesa hacer un análisis de los distintos clusters que podemos crear fijándonos únicamente en las variables explicativas, con el objetivo de crear distintos perfiles de vino en función de las características químicas que tiene cada uno de ellos.
+
+```{r,warning=FALSE,message=FALSE}
+# Carga paquetes necesarios
+library(ggplot2)
+library(factoextra)
+```
+
+Carga el dataset
+
+```{r,warning=FALSE,message=FALSE}
+
+```
+
+Crea un nuevo dataset que contenga únicamente las variables explicativas normalizadas utilizando la función scale para poder garantizar que todas las variables tengan igual peso en el algoritmo k-means.
+
+```{r,warning=FALSE,message=FALSE}
+
+```
+
+# 1.1. Selección del número óptimo de clusters
+
+* **Ejercicio 1**: Indica cuál es el número óptimo o el intervalo óptimo de clusters según el elbow method. Fija como semilla el valor 123. Justifica tu respuesta. 
+
+```{r,warning=FALSE,message=FALSE}
+
+```
+
+* **Ejercicio 2**: Indica cuál es el número óptimo o el intervalo óptimo de clusters según el dendrograma. Justifica tu respuesta. 
+
+
+```{r}
+
+```
+
+# 1.3. Sugerencias de departamentos internos de la empresa
+
+* **Ejercicio 3**: Desde el departamento de marketing nos solicitan realizar un análisis lo más simple posible para poder categorizar los vinos en dos grupos distintos. Es decir, nos piden que hagamos únicamente dos clusters y los analicemos. ¿En vistas de los resultados obtenidos por el elbow method y el dendrograma consideras que podrías tener sentido? Justifica tu respuesta
+
+```{r}
+
+```
+
+* **Ejercicio 4**: Desde el departamento de producto nos solicitan realizar un análisis más complejo con el objetivo de agrupar los vinos con más matices. Según el equipo de sommeliers de la empresa, estos consideran que hay 6 tipos de vino en función del aroma y el gusto que desprende cada uno de ellos. ¿Según la interpretación que se desprende del dendrograma, consideras que podrías tener sentido agrupar los distintos vinos en 6 clusters distintos? Justifica tu respuesta
+
+```{r}
+
+```
+
+# 1.4. Análisis de resultados
+
+Crea un modelo k-means con 2 centroides con un valor de semilla igual a 123. Imprime el valor de los centroides en cada variable.
+
+```{r}
+
+```
+
+* **Ejercicio 5**: En vistas del resultado anterior, ¿Qué variables parecen ser más importantes en la diferenciación de cada cluster? Si tuvieses que darle un nombre comercial a cada uno de los clusters que nombre le darías? Justifica tu respuesta
+
+```{r}
+
+```
+
+* **Ejercicio 6**: ¿Cuál de los dos clusters creados consideras que tiene, en promedio, un valor más alto en la variable quality? Justifica tu respuesta
+
+```{r}
+
+```
+
+Crea un modelo k-means con 6 centroides con un valor de semilla igual a 123 y iter.max=30. Imprime el valor de los centroides en cada variable.
+
+```{r}
+
+```
+
+* **Ejercicio 7**: En vistas del resultado anterior, ¿Qué variables parecen ser más importantes en la diferenciación de cada cluster? Si tuvieses que darle un nombre comercial a cada uno de los clusters que nombre le darías? Justifica tu respuesta
+
+```{r}
+
+```
+
+* **Ejercicio 8**: Indica cuál es el cluster con un valor más alto en la variable quality y con un valor más bajo. Justifica tu respuesta
+
+```{r}
+
+```
+
+## 2. Puntuación del del ejercicio
+
+Este ejercicio se puntuará con 10 puntos, siendo el mínimo necesario para superar la prueba de 5 puntos. 
+La puntuación es la siguiente:
+
+* Ejercicio 1: 1 punto
+
+* Ejercicio 2: 1 punto
+
+* Ejercicio 3: 1 punto
+
+* Ejercicio 4: 1 punto
+
+* Ejercicio 5: 1.5 puntos
+
+* Ejercicio 6: 1.5 puntos
+
+* Ejercicio 7: 1.5 puntos
+
+* Ejercicio 8: 1.5 puntos
