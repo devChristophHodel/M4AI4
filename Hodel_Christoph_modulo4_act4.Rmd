@@ -55,7 +55,9 @@ summary(vinos_df_orig)
 Crea un nuevo dataset que contenga únicamente las variables explicativas normalizadas utilizando la función scale para poder garantizar que todas las variables tengan igual peso en el algoritmo k-means.
 
 ```{r,warning=FALSE,message=FALSE}
+# Normalizar variables explicativas
 vinos_df_scaled <- scale(vinos_df_orig[,names(vinos_df_orig) != 'quality'])
+
 summary(vinos_df_scaled)
 ```
 
@@ -68,8 +70,13 @@ summary(vinos_df_scaled)
 set.seed(123)
 
 # Visualización del elbow method
-fviz_nbclust(x = vinos_df_scaled, FUNcluster = kmeans, method = "wss", k.max = 15, 
-             diss = get_dist(vinos_df_scaled, method = "euclidean"), nstart = 50)
+fviz_nbclust(
+            x = vinos_df_scaled, 
+            FUNcluster = kmeans, 
+            method = "wss", 
+            k.max = 15, 
+            diss = get_dist(vinos_df_scaled, method = "euclidean"), nstart = 50
+            )
 
 
 ```
@@ -87,12 +94,19 @@ estabilizarse, indicando que K = 6. Parece una buena elección.")
 set.seed(123)
 
 # Se obtiene el dendrograma de Clustering Jerárquico para elegir el número de clusters.
-vinos_df_scaled_dendrograma <- hclust(d = dist(x = vinos_df_scaled, method = "euclidean"),
-                               method = "complete")
+vinos_df_scaled_dendrograma <- hclust(
+                                  d = dist(
+                                          x = vinos_df_scaled, 
+                                          method = "euclidean"
+                                          ),
+                                          method = "complete")
 
-fviz_dend(x = vinos_df_scaled_dendrograma, cex = 0.5, main = "Linkage completo",
-          sub = "Distancia euclídea") +
-  theme(plot.title =  element_text(hjust = 0.5, size = 15))
+fviz_dend(
+          x = vinos_df_scaled_dendrograma, 
+          cex = 0.5, 
+          main = "Linkage completo",
+          sub = "Distancia euclídea"
+          ) +  theme(plot.title =  element_text(hjust = 0.5, size = 15))
 
 ```
 ```{r}
@@ -123,12 +137,45 @@ Crea un modelo k-means con 2 centroides con un valor de semilla igual a 123. Imp
 
 ```{r}
 
+set.seed(123)
+
+# Crear modelo k-means con 2 centroides
+km_clusters_vino <- kmeans(
+                          x = vinos_df_scaled, 
+                          centers = 2, # 2 centroides
+                          nstart = 50
+                          )
+
+
+# Imprimir valor de los centroides en cada variable 
+print(km_clusters_vino$centers)
+
+# fviz_cluster(
+#             object = km_clusters_vino, 
+#             data = vinos_df_scaled, 
+#             show.clust.cent = TRUE,
+#             ellipse.type = "euclid", 
+#             star.plot = TRUE,
+#             repel = TRUE
+#             ) +
+#             labs(title = "Resultados clustering K-means") +
+#             theme_bw() +
+#             theme(legend.position = "none")
+
 ```
 
 * **Ejercicio 5**: En vistas del resultado anterior, ¿Qué variables parecen ser más importantes en la diferenciación de cada cluster? Si tuvieses que darle un nombre comercial a cada uno de los clusters que nombre le darías? Justifica tu respuesta
 
 ```{r}
-
+print("Cluster 1: Las variables density, residual.sugar y total.sulfur.dioxide suelen que influir el compartamiente del cluster 1 lo mas de manera positivo. En cambio, las variables alcohol y ph presentan valores inferiores al promedio. Vinos dulces con un cuerpo pronunciado, que pueden tener aditivos de sulfur dioxide.")
+print("Cluster 2: Las variables alcohol y pH suelen que influir el compartamiente del cluster 2 lo mas de manera positivo. En cambio, las variables density y residual.sugar presentan valores inferiores al promedio. Vinos  ligeros, con contenido de alcohol moderada.")
+cat(strrep("-", 200), "\n")
+print("Nombres comerciales:")
+print("Cluster 1: Vinos dulces y estructurados")
+print("por su tasa de residual.sugar y su densidad alto")
+cat(strrep("- -", 15), "\n")
+print("Cluster 2: Vinos secos y naturales ")
+print("por su tasa de azucar y total.sulfur.dioxide baja.")
 ```
 
 * **Ejercicio 6**: ¿Cuál de los dos clusters creados consideras que tiene, en promedio, un valor más alto en la variable quality? Justifica tu respuesta
