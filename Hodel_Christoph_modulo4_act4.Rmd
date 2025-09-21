@@ -140,7 +140,7 @@ Crea un modelo k-means con 2 centroides con un valor de semilla igual a 123. Imp
 set.seed(123)
 
 # Crear modelo k-means con 2 centroides
-km_clusters_vino <- kmeans(
+km_clusters_vino_e_4 <- kmeans(
                           x = vinos_df_scaled, 
                           centers = 2, # 2 centroides
                           nstart = 50
@@ -148,7 +148,7 @@ km_clusters_vino <- kmeans(
 
 
 # Imprimir valor de los centroides en cada variable 
-print(km_clusters_vino$centers)
+print(km_clusters_vino_e_4$centers)
 
 # fviz_cluster(
 #             object = km_clusters_vino, 
@@ -169,6 +169,8 @@ print(km_clusters_vino$centers)
 ```{r}
 print("Cluster 1: Las variables density, residual.sugar y total.sulfur.dioxide suelen que influir el compartamiente del cluster 1 lo mas de manera positivo. En cambio, las variables alcohol y ph presentan valores inferiores al promedio. Vinos dulces con un cuerpo pronunciado, que pueden tener aditivos de sulfur dioxide.")
 print("Cluster 2: Las variables alcohol y pH suelen que influir el compartamiente del cluster 2 lo mas de manera positivo. En cambio, las variables density y residual.sugar presentan valores inferiores al promedio. Vinos  ligeros, con contenido de alcohol moderada.")
+
+
 cat(strrep("-", 200), "\n")
 print("Nombres comerciales:")
 print("Cluster 1: Vinos dulces y estructurados")
@@ -181,27 +183,101 @@ print("por su tasa de azucar y total.sulfur.dioxide baja.")
 * **Ejercicio 6**: ¿Cuál de los dos clusters creados consideras que tiene, en promedio, un valor más alto en la variable quality? Justifica tu respuesta
 
 ```{r}
+# Anadir variable cluster al vinos_df_orig 
+vinos_df_scaled$cluster = km_clusters_vino_e_4$cluster
+
+# aggregar por cluster (1 y 2) y calculando el promedio per cluster
+aggregate(vinos_df_orig$quality, by = list(Cluster = vinos_df_scaled$cluster), FUN = mean)
+
+
+```
+
+```{r}
+
+print("Segun la agrupacion de los clusters presentada anteriormente, se concluye que cluster 2 agrupa vinos que tienen en promedio mayor calid (6.060524) que los vinos del Cluster 1 (5.603475).")
 
 ```
 
 Crea un modelo k-means con 6 centroides con un valor de semilla igual a 123 y iter.max=30. Imprime el valor de los centroides en cada variable.
 
+
+
 ```{r}
 
+set.seed(123)
+
+# Crear modelo k-means con 6 centroides
+km_clusters_vino_6 <- kmeans(
+                          x = vinos_df_scaled, 
+                          centers = 6, # 6 centroides
+                          nstart = 50,
+                          iter.max = 30      # máximo de iteraciones
+                          )
+
+
+# Imprimir valor de los centroides en cada variable 
+print(km_clusters_vino_6$centers)
 ```
 
 * **Ejercicio 7**: En vistas del resultado anterior, ¿Qué variables parecen ser más importantes en la diferenciación de cada cluster? Si tuvieses que darle un nombre comercial a cada uno de los clusters que nombre le darías? Justifica tu respuesta
 
 ```{r}
 
+print("Cluster 1: Alta concentracion de volatile.acidity y baja cantidad de citric.acid")
+print("Cluster 2: Alta concentracion de chlorides y baja valor ph")
+print("Cluster 3: Alta concentracion de alcohol y baja tasa de densidad")
+print("Cluster 4: Alta concentracion de densidad y total.sulfur.dioxide y baja tasa de alcohol")
+print("Cluster 5: Alta concentracion de fixed.acidity y baja tasa de valor ph. Concentracion moderad de alcohol.")
+print("Cluster 6: Alta concentracion de valor pH y sulphates y baja tasa de volatile.acidity")
+
+
+cat(strrep("-", 200), "\n")
+
+print("Nombres comerciales:")
+print("Cluster 1: Buen vino para cocinar.")
+print("Por su volatile.acidity alta")
+cat("\n")
+
+print("Cluster 2: Vino fresco y salino")
+print("Por su tasa de chlorides alta y ph baja valor ph (mas acido)")
+cat("\n")
+
+print("Cluster 3: Vino seco y alcohólico")
+print("Por su tasa de alcohol alta y baja tasa de densidad.")
+cat("\n")
+
+print("Cluster 4: Vino dulce ligero.")
+print("Por su alta concentracion de densidad y baja tasa de alcohol.")
+cat("\n")
+
+print("Cluster 5: Vino seco y fresco")
+print("Por su alta concentracion de fixed.acidity y baja tasa de valor ph.")
+cat("\n")
+
+print("Cluster 6: Vino suave de alta cualiad")
+print("Por su alto valor ph y su baja tasa de volatile.acidity")
 ```
 
 * **Ejercicio 8**: Indica cuál es el cluster con un valor más alto en la variable quality y con un valor más bajo. Justifica tu respuesta
 
 ```{r}
+# Anadir variable cluster al vinos_df_orig 
+vinos_df_scaled$cluster6 = km_clusters_vino_6$cluster
+
+# aggregar por cluster y calculando el promedio per cluster
+aggregate(vinos_df_orig$quality, by = list(Cluster = vinos_df_scaled$cluster6), FUN = mean)
 
 ```
 
+```{r}
+
+print("Conclusion segun la agrupacion de los clusters presentada anteriormente.")
+
+print("Cluster 3 es el cluster con el valor promedio mas alto (6.468884) en la variable quality")
+print("Cluster 1 es es cluster con el valor promedio mas bajo (5.286000) en la variable quality")
+
+
+```
 ## 2. Puntuación del del ejercicio
 
 Este ejercicio se puntuará con 10 puntos, siendo el mínimo necesario para superar la prueba de 5 puntos. 
