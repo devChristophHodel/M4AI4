@@ -81,8 +81,8 @@ fviz_nbclust(
 
 ```
 ```{r}
-print("En la visualización del elbow method encima, a partir de seis clusters, la reducción en la suma total de cuadrados internos parece
-estabilizarse, indicando que K = 6. Parece una buena elección.")
+print("En la visualización del elbow method encima, a partir de cinco clusters, la reducción en la suma total de cuadrados internos parece
+estabilizarse, indicando que K = 5. Parece una buena elección.")
 ```
 
 
@@ -99,7 +99,8 @@ vinos_df_scaled_dendrograma <- hclust(
                                           x = vinos_df_scaled, 
                                           method = "euclidean"
                                           ),
-                                          method = "complete")
+                                          method = "ward.D2"
+                                  )
 
 fviz_dend(
           x = vinos_df_scaled_dendrograma, 
@@ -110,7 +111,7 @@ fviz_dend(
 
 ```
 ```{r}
-print("El numero optimo de clusters segun el dendrograma parece ser 6. Al cortar el dendrogrma a ese altura, las uniones entre los grupos todavia occuren a una altura relativamente eleveada, lo que indica que la distancia intercluster es significativa. Ademas elegir 6 clusters es coherente con lo observado en el metodo del code (ejercicio 1).")
+print("El numero optimo de clusters segun el dendrograma parece ser 5. Al cortar el dendrogrma a ese altura, las uniones entre los grupos todavia occuren a una altura relativamente eleveada, lo que indica que la distancia intercluster es significativa. Ademas elegir 5 clusters es coherente con lo observado en el metodo del code (ejercicio 1).")
 ```
  
 # 1.3. Sugerencias de departamentos internos de la empresa
@@ -130,7 +131,6 @@ print("Si, agrupar en 6 clusters tiene sentido.")
 print("Segun el grafico del metodo del codo, a partir de k = 6, la reducción en la suma total de cuadrados internos comienza estabilizarse, indicando que seis clusters, parecen una buena eleccion.")
 print("Al cortar el dendrogrma al altura para formar 6 grupos, las uniones entre los grupos todavia occuren a una altura relativamente eleveada, significa que los grupos sieguen estando bien separados.")
 ```
-
 # 1.4. Análisis de resultados
 
 Crea un modelo k-means con 2 centroides con un valor de semilla igual a 123. Imprime el valor de los centroides en cada variable.
@@ -150,17 +150,6 @@ km_clusters_vino_e_4 <- kmeans(
 # Imprimir valor de los centroides en cada variable 
 print(km_clusters_vino_e_4$centers)
 
-# fviz_cluster(
-#             object = km_clusters_vino, 
-#             data = vinos_df_scaled, 
-#             show.clust.cent = TRUE,
-#             ellipse.type = "euclid", 
-#             star.plot = TRUE,
-#             repel = TRUE
-#             ) +
-#             labs(title = "Resultados clustering K-means") +
-#             theme_bw() +
-#             theme(legend.position = "none")
 
 ```
 
@@ -182,12 +171,11 @@ print("por su tasa de azucar y total.sulfur.dioxide baja.")
 
 * **Ejercicio 6**: ¿Cuál de los dos clusters creados consideras que tiene, en promedio, un valor más alto en la variable quality? Justifica tu respuesta
 
+
 ```{r}
-# Anadir variable cluster al vinos_df_orig 
-vinos_df_scaled$cluster = km_clusters_vino_e_4$cluster
 
 # aggregar por cluster (1 y 2) y calculando el promedio per cluster
-aggregate(vinos_df_orig$quality, by = list(Cluster = vinos_df_scaled$cluster), FUN = mean)
+aggregate(vinos_df_orig$quality, by = list(Cluster = km_clusters_vino_e_4$cluster), FUN = mean)
 
 
 ```
@@ -205,6 +193,7 @@ Crea un modelo k-means con 6 centroides con un valor de semilla igual a 123 y it
 ```{r}
 
 set.seed(123)
+
 
 # Crear modelo k-means con 6 centroides
 km_clusters_vino_6 <- kmeans(
@@ -261,11 +250,8 @@ print("Por su alto valor ph y su baja tasa de volatile.acidity")
 * **Ejercicio 8**: Indica cuál es el cluster con un valor más alto en la variable quality y con un valor más bajo. Justifica tu respuesta
 
 ```{r}
-# Anadir variable cluster al vinos_df_orig 
-vinos_df_scaled$cluster6 = km_clusters_vino_6$cluster
-
 # aggregar por cluster y calculando el promedio per cluster
-aggregate(vinos_df_orig$quality, by = list(Cluster = vinos_df_scaled$cluster6), FUN = mean)
+aggregate(vinos_df_orig$quality, by = list(Cluster = km_clusters_vino_6$cluster), FUN = mean)
 
 ```
 
